@@ -47,7 +47,7 @@ See `references/patterns.md` for:
 
 ```bash
 cd packages/ui
-npx figma connect publish --token "figd_-WK-pILjzJvq1ce9BmT_OmMNs765BkQSiiDvaLLe"
+npx figma connect publish --token "$FIGMA_ACCESS_TOKEN"
 ```
 
 Confirm each published line in the output matches the expected component and variant filters.
