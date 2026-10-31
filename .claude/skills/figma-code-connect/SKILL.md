@@ -34,10 +34,12 @@ The URL the user gives often points to a documentation/section frame, not the co
 Create `packages/ui/src/components/<component-name>.figma.tsx`.
 
 **Decide: one connection or two?**
+
 - **One** `figma.connect()` when all states produce the same JSX shape (only prop values differ).
 - **Two** when JSX structure must differ (Error adds `<FieldError>`, Filled adds non-literal `defaultValue`, Selected changes wrapping component). Add a `variant: { State: 'Error' }` (or other) filtered second connection.
 
 See `references/patterns.md` for:
+
 - Parser hard constraints (inline enum objects, no conditional JSX)
 - Size naming convention (x-lg→xl, lg-default→default, md→sm/md, sm→xs/sm)
 - Label wrapping and error row patterns
@@ -56,11 +58,11 @@ Confirm each published line in the output matches the expected component and var
 
 ## Quick reference
 
-| Figma type | figma.* call |
-|---|---|
-| VARIANT | `figma.enum('Prop', { FigmaVal: codeVal })` — **inline object, no variable** |
-| TEXT | `figma.string('Prop')` |
-| BOOLEAN | `figma.boolean('Prop')` |
+| Figma type | figma.\* call                                                                |
+| ---------- | ---------------------------------------------------------------------------- |
+| VARIANT    | `figma.enum('Prop', { FigmaVal: codeVal })` — **inline object, no variable** |
+| TEXT       | `figma.string('Prop')`                                                       |
+| BOOLEAN    | `figma.boolean('Prop')`                                                      |
 
 **SA-DesignSystem file key:** `KHTdpBPOn3ZsJrNelheq5z`
 
