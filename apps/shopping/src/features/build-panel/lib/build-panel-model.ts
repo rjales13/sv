@@ -1,18 +1,18 @@
 import type {
   AirCityPricing,
   CategoryPricingAvailability,
-  CruiseExtensions,
-} from '@vikings/contracts';
-import { formatDateWithWeekday } from '@vikings/ui/lib/date-format';
-import { isCruiseTour, nightsLabel } from '@/features/cruise-details/lib/cruise-header-model.ts';
-import { hotelSideLabel } from '@/features/cruise-details/lib/extensions-view-model.ts';
-import { PROTOTYPE_GUESTS } from '@/features/cruise-details/lib/viking-air-fixtures.ts';
+  crExtensions,
+} from '@vas/contracts';
+import { formatDateWithWeekday } from '@vas/ui/lib/date-format';
+import { iscrTour, nightsLabel } from '@/features/cr-details/lib/cr-header-model.ts';
+import { hotelSideLabel } from '@/features/cr-details/lib/extensions-view-model.ts';
+import { PROTOTYPE_GUESTS } from '@/features/cr-details/lib/VA-air-fixtures.ts';
 import {
-  CRUISE_ONLY,
+  cr_ONLY,
   priceSelection,
   toTitleCase,
-} from '@/features/cruise-details/lib/viking-air-pricing.ts';
-import type { CruiseChoices } from '@/store/cruise-workspace.store.ts';
+} from '@/features/cr-details/lib/VA-air-pricing.ts';
+import type { crChoices } from '@/store/cr-workspace.store.ts';
 import type {
   BuildPanelExpandedProps,
   BuildPanelGuest,
@@ -27,8 +27,8 @@ import type {
   real adapter layer replaces these formulae without touching any UI component.
 
   Design decisions:
-  - Guest names come from PROTOTYPE_GUESTS (same fixture the Viking Air tab uses).
-  - Cruise fare is the held stateroom category's doublePrice per person. With no cabin held,
+  - Guest names come from PROTOTYPE_GUESTS (same fixture the VA Air tab uses).
+  - cr fare is the held stateroom category's doublePrice per person. With no cabin held,
     the whole panel prices at zero (VCX-10332: no cabin is pre-selected). There is no
     "default" category to fall back on: EVO orders categories price-descending, so the old
     `categories[0]` fallback quoted the sailing's most expensive cabin.
@@ -36,12 +36,12 @@ import type {
     own price, independent of the stateroom. Air and TPP wait for a held cabin. Either way the
     breakdown adds up to the total it sits under.
   - Extension sections come from choices.extensionIds (store) matched by EVO invcode against
-    the CruiseExtensionsProvider offering passed in as `extensions`.
+    the crExtensionsProvider offering passed in as `extensions`.
   - Air sections come from choices.air (store) priced against the AirCityPricingProvider
     payload passed in as `airPricing` — the same data and the same `priceSelection` the
-    Viking Air tab uses, so the two cannot disagree.
-  - Each guest column has at most four groups, in this order: cruise fare (+ discounts),
-    hotel extensions, Viking Air, TPP. Every selected extension is a line in ONE hotel group
+    VA Air tab uses, so the two cannot disagree.
+  - Each guest column has at most four groups, in this order: cr fare (+ discounts),
+    hotel extensions, VA Air, TPP. Every selected extension is a line in ONE hotel group
     under one subtotal; TPP appears only when the guest's checkbox is ticked.
   - TPP price is a fixed mock amount (see TPP_PRICE_USD), matching the Figma annotation.
   - Guest 0 (primary PAX) is TPP-eligible; all others are ineligible (Non US Resident).
@@ -57,16 +57,16 @@ export const TPP_PRICE_USD = 749;
 export const MOCK_GUEST_NAMES = PROTOTYPE_GUESTS.map((g) => g.name);
 
 export interface BuildPanelModelInput {
-  cruise: CategoryPricingAvailability;
-  choices: CruiseChoices;
+  cr: CategoryPricingAvailability;
+  choices: crChoices;
   guests: number;
   currency: string;
   promoCodes: readonly string[];
   /**
-   * The cruise's air fares, from `AirCityPricingProvider`.
+   * The cr's air fares, from `AirCityPricingProvider`.
    *
    * Passed in rather than stored alongside the choices, because the workspace store records
-   * what the agent PICKED and never what something costs. The panel and the Viking Air tab
+   * what the agent PICKED and never what something costs. The panel and the VA Air tab
    * therefore price the same selection through the same `priceSelection`, from the same
    * React Query cache entry — which is what stops the footer total and the tab disagreeing.
    *
@@ -74,13 +74,13 @@ export interface BuildPanelModelInput {
    */
   airPricing?: AirCityPricing | undefined;
   /**
-   * The cruise's extension offering, from `CruiseExtensionsProvider`.
+   * The cr's extension offering, from `crExtensionsProvider`.
    *
    * Passed in for the same reason `airPricing` is: the store records which extensions the
    * agent PICKED, never what they cost. The tab and the panel read one React Query entry, so
    * a card and the footer cannot disagree.
    */
-  extensions?: CruiseExtensions | undefined;
+  extensions?: crExtensions | undefined;
 }
 
 /** Returns "Guest 1", "Guest 2", etc. for zero-based index i. */
@@ -101,13 +101,13 @@ function formatCurrencyAmount(amount: number, currency: string): string {
  * to price — no cabin held yet, or a held category the sailing no longer offers.
  */
 function resolvePerPersonFare(
-  cruise: CategoryPricingAvailability,
-  choices: CruiseChoices,
+  cr: CategoryPricingAvailability,
+  choices: crChoices,
   guests: number,
 ): number | undefined {
   const abbrev = choices.stateroom?.categoryAbbrev;
   if (abbrev === undefined) return undefined;
-  const category = cruise.categories.find((c) => c.abbrev === abbrev);
+  const category = cr.categories.find((c) => c.abbrev === abbrev);
   if (category === undefined) return undefined;
   // Solo traveller cannot take the double-occupancy fare (matches pricing.ts rule).
   return guests <= 1 ? category.singlePrice : category.doublePrice;
@@ -128,8 +128,8 @@ interface GuestColumnResult {
 /** Formats the gateway portion of the airfare label for one-way and round-trip selections. */
 function formatGatewayPart(origin: string | undefined, ret: string | undefined): string {
   if (origin === undefined || ret === undefined) return origin ?? ret ?? '';
-  if (origin === CRUISE_ONLY) return `${ret} Return Only`;
-  if (ret === CRUISE_ONLY) return `${origin} Outbound Only`;
+  if (origin === cr_ONLY) return `${ret} Return Only`;
+  if (ret === cr_ONLY) return `${origin} Outbound Only`;
   return origin === ret ? `${origin} Roundtrip` : `${origin} Outbound – ${ret} Return`;
 }
 
@@ -137,12 +137,12 @@ function formatGatewayPart(origin: string | undefined, ret: string | undefined):
  * Builds the air section for a guest, or undefined when air is not selected/applicable.
  *
  * Prices through the shared `priceSelection`, so an outbound-only selection is billed as one
- * leg here exactly as it is on the Viking Air tab. This used to recompute from
+ * leg here exactly as it is on the VA Air tab. This used to recompute from
  * `AIRFARE_BY_CLASS` minus a flat discount, which both over-billed one-way selections and
  * disagreed with the delivered fares for most gateways.
  */
 function buildAirSection(
-  choices: CruiseChoices,
+  choices: crChoices,
   guestId: string,
   currency: string,
   airPricing: AirCityPricing | undefined,
@@ -155,14 +155,14 @@ function buildAirSection(
 
   // 'BUSINESS' + 'D' → 'Business D', matching the frames' sentence case.
   const classCode =
-    airChoice.originGateway !== CRUISE_ONLY ? airChoice.originClass : airChoice.returnClass;
+    airChoice.originGateway !== cr_ONLY ? airChoice.originClass : airChoice.returnClass;
   const classLabel = `${toTitleCase(priced.className)}${classCode === undefined ? '' : ` ${classCode}`}`;
 
   const gatewayPart = formatGatewayPart(airChoice.originGateway, airChoice.returnGateway);
 
   const airLabel = gatewayPart
-    ? `Viking Air (${gatewayPart}) (${classLabel})`
-    : `Viking Air (${classLabel})`;
+    ? `VA Air (${gatewayPart}) (${classLabel})`
+    : `VA Air (${classLabel})`;
 
   return {
     section: {
@@ -180,7 +180,7 @@ function buildAirSection(
         },
         {
           variant: 'subtotal',
-          label: 'Viking Air Subtotal',
+          label: 'VA Air Subtotal',
           amount: formatCurrencyAmount(priced.net, currency),
         },
       ],
@@ -200,9 +200,9 @@ function buildAirSection(
  * contract makes unnecessary because the price is a number.
  */
 function buildExtensionSection(
-  choices: CruiseChoices,
+  choices: crChoices,
   currency: string,
-  offering: CruiseExtensions | undefined,
+  offering: crExtensions | undefined,
 ): { section: BuildPanelSection; amount: number } | undefined {
   if (choices.extensionIds.length === 0 || offering === undefined) return undefined;
 
@@ -252,11 +252,11 @@ function buildProtectionSection(currency: string): BuildPanelSection {
 
 function buildGuestColumn(
   guestIndex: number,
-  choices: CruiseChoices,
+  choices: crChoices,
   perPersonFare: number | undefined,
   currency: string,
   airPricing: AirCityPricing | undefined,
-  extensions: CruiseExtensions | undefined,
+  extensions: crExtensions | undefined,
   fareLabel: string,
 ): GuestColumnResult {
   const guestKey = `guest-${guestIndex}`;
@@ -288,10 +288,10 @@ function buildGuestColumn(
 
   const sections: BuildPanelSection[] = [
     {
-      kind: 'cruise',
+      kind: 'cr',
       lines: [
         { variant: 'list', label: fareLabel, amount: fareFormatted },
-        { variant: 'subtotal', label: 'Cruise Subtotal', amount: fareFormatted },
+        { variant: 'subtotal', label: 'cr Subtotal', amount: fareFormatted },
       ],
     },
     ...(extResult !== undefined ? [extResult.section] : []),
@@ -317,18 +317,18 @@ function buildGuestColumn(
 }
 
 /**
- * Derives the `BuildPanelExpandedProps` from live cruise data and workspace choices.
+ * Derives the `BuildPanelExpandedProps` from live cr data and workspace choices.
  *
  * This is the single derivation point for the Build Panel UI — keep derivation logic here
  * and away from React components, so it is directly testable and replaceable.
  */
 export function toBuildPanelModel(input: BuildPanelModelInput): BuildPanelModel {
-  const { cruise, choices, guests, currency, promoCodes, airPricing, extensions } = input;
+  const { cr, choices, guests, currency, promoCodes, airPricing, extensions } = input;
   const guestCount = Math.max(1, guests);
 
-  const perPersonFare = resolvePerPersonFare(cruise, choices, guestCount);
-  // A cruise tour's fare covers the sailing and its land stays, so it is named for both.
-  const fareLabel = isCruiseTour(cruise) ? 'Cruise Tour Fare' : 'Cruise Fare';
+  const perPersonFare = resolvePerPersonFare(cr, choices, guestCount);
+  // A cr tour's fare covers the sailing and its land stays, so it is named for both.
+  const fareLabel = iscrTour(cr) ? 'cr Tour Fare' : 'cr Fare';
   const guestResults = Array.from({ length: guestCount }, (_, i) =>
     buildGuestColumn(i, choices, perPersonFare, currency, airPricing, extensions, fareLabel),
   );
@@ -336,9 +336,9 @@ export function toBuildPanelModel(input: BuildPanelModelInput): BuildPanelModel 
   const grossTotalAmount = guestResults.reduce((sum, r) => sum + r.totalAmount, 0);
 
   const details: string[] = [
-    cruise.shipName.toUpperCase(),
-    cruise.cruiseId,
-    nightsLabel(cruise.nights, cruise.totalNights),
+    cr.shipName.toUpperCase(),
+    cr.crId,
+    nightsLabel(cr.nights, cr.totalNights),
   ];
   if (choices.stateroom !== undefined) {
     details.push(
@@ -347,9 +347,9 @@ export function toBuildPanelModel(input: BuildPanelModelInput): BuildPanelModel 
   }
 
   const base = {
-    title: cruise.cruiseName,
-    startDate: formatDateWithWeekday(cruise.sailingDateFrom),
-    endDate: formatDateWithWeekday(cruise.sailingDateTo),
+    title: cr.crName,
+    startDate: formatDateWithWeekday(cr.sailingDateFrom),
+    endDate: formatDateWithWeekday(cr.sailingDateTo),
     details,
     guests: guestColumns,
     // Symbol-only: PriceCurrency draws the currency code beside the figure, so a
@@ -360,9 +360,9 @@ export function toBuildPanelModel(input: BuildPanelModelInput): BuildPanelModel 
     // chosen before one.
     isPriced: perPersonFare !== undefined || grossTotalAmount > 0,
   };
-  // VCX-10484 R6: the badge names the promo that priced the cruise. The search can find a promo
+  // VCX-10484 R6: the badge names the promo that priced the cr. The search can find a promo
   // by part of its code, so the typed code is only the fallback, for the adapters that do not
   // say which promo applied.
-  const promoCode = cruise.appliedPromoCode ?? promoCodes[0]?.trim();
+  const promoCode = cr.appliedPromoCode ?? promoCodes[0]?.trim();
   return promoCode !== undefined && promoCode !== '' ? { ...base, promoCode } : base;
 }

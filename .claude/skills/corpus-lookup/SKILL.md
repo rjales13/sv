@@ -25,7 +25,7 @@ charge for it for the rest of the session.
 4. **Prose is safe.** `docs/*.md` and `context/**/*.md` are small — `Read` them
    directly. The hazard is JSON.
 5. **Quote every corpus path.** Some contain spaces, e.g.
-   `context/ShoppingAppConnectionDetails/Microsoft Dataverse/`.
+   `context/SAppConnectionDetails/Microsoft Dataverse/`.
 
 ## Getting a payload's shape
 
@@ -43,7 +43,7 @@ with the full path above.
 
 ```bash
 # what fields does this endpoint return?
-scripts/shape.sh "context/ShoppingAppConnectionDetails/VKG.API.GetShipMap/ResponseBody/response.sample.json"
+scripts/shape.sh "context/SAppConnectionDetails/VKG.API.GetShipMap/ResponseBody/response.sample.json"
 
 # just the pricing fields — the usual case, ~15 tokens instead of ~15,000
 scripts/shape.sh context/mock-data/catavail-2027.full.json --grep price
@@ -73,7 +73,7 @@ git lfs pull --include='context/mock-data/catavail-2027.full.json'
 `index.sh` reads the true size out of the pointer, so its verdict is right
 either way. Do not fetch a 66MB fixture just to learn a field name — the
 same fields appear in the much smaller
-`context/ShoppingAppConnectionDetails/VKG.API.GetCategoryPricingAvailability/`
+`context/SAppConnectionDetails/VKG.API.GetCategoryPricingAvailability/`
 sample, which is ordinary git content.
 
 ## Knowing what is safe
@@ -85,9 +85,9 @@ computed live, so this does not go stale.
 ## Finding which file holds a fact
 
 ```bash
-ls context/ShoppingAppConnectionDetails/            # endpoints, one dir each
+ls context/SAppConnectionDetails/            # endpoints, one dir each
 rg -l --glob '!context/mock-data/**' 'updateCabinHold' context/ | head
-rg -m3 -C1 'StateroomHold' context/ShoppingAppConnectionDetails/ | head -20
+rg -m3 -C1 'StateroomHold' context/SAppConnectionDetails/ | head -20
 ```
 
 Corpus naming rarely matches what you would guess — the cabin-hold operation is
@@ -101,7 +101,7 @@ data, not schema, and there are millions of them.
 
 | You need | Look in |
 |---|---|
-| EVO / Dataverse request + response shapes | `context/ShoppingAppConnectionDetails/<VKG.API.*>/` |
+| EVO / Dataverse request + response shapes | `context/SAppConnectionDetails/<VKG.API.*>/` |
 | EVO method semantics, mappings, endpoint lists | `context/Related-APIs/` (prose — safe to Read) |
 | Fixture data the mock adapters mirror | `context/mock-data/` — shape only |
 | PRD, domain intros, CRM data model | `context/*.md` (safe to Read) |
@@ -115,7 +115,7 @@ data, not schema, and there are millions of them.
 ## Do not settle these from the corpus
 
 Cabin-hold duration, Saved Search editability, FR1.1 date entry and the
-nights 0/0 default are **disputed or pending Viking confirmation**. The corpus
+nights 0/0 default are **disputed or pending VA confirmation**. The corpus
 contains conflicting values. Surface the conflict instead of picking one — see
 `AGENTS.md` § 10.
 

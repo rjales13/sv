@@ -1,10 +1,10 @@
-import { Button } from '@vikings/ui/components/button';
-import { Icon } from '@vikings/ui/components/icon';
-import { cn } from '@vikings/ui/lib/utils';
+import { Button } from '@vas/ui/components/button';
+import { Icon } from '@vas/ui/components/icon';
+import { cn } from '@vas/ui/lib/utils';
 import { PriceCurrency } from '@/shared/components/price-currency';
 
 /*
-  PanelFooter — sticky bottom bar of the Build Panel (ShoppingApp_UX-VD, node 1619:339423).
+  PanelFooter — sticky bottom bar of the Build Panel (SApp_UX-VD, node 1619:339423).
 
   Eight variants map the Figma component set (APPROVED Build Panel V7, node 2148-264918):
     TA              → expanded, TA/agent mode: gross total (stacked above comm total)
@@ -20,8 +20,8 @@ import { PriceCurrency } from '@/shared/components/price-currency';
     PriceCurrency (total)         → @/shared/components/price-currency, variant="total"
     PriceCurrency (comm-total)    → @/shared/components/price-currency, variant="comm-total"
     PriceCurrency (recalculating) → @/shared/components/price-currency, variant="recalculating"
-    Button (secondary)            → @vikings/ui/components/button, variant="secondary"
-    Button (default/primary)      → @vikings/ui/components/button, variant="default"
+    Button (secondary)            → @vas/ui/components/button, variant="secondary"
+    Button (default/primary)      → @vas/ui/components/button, variant="default"
     Spinner                       → rendered internally by PriceCurrency recalculating variant
     Icon (ExpandLess16)           → BREAKDOWN chevron-up toggle
     Icon (StatusInfo16)           → disabled-state info notice
@@ -91,7 +91,7 @@ export function PanelFooter({
   const isExpanded = isExpandedVariant(variant);
 
   // The primary CTA is contextual: while the panel is collapsed (the agent is still
-  // configuring the cruise) it reads "Review Booking", inviting them to open the breakdown;
+  // configuring the cr) it reads "Review Booking", inviting them to open the breakdown;
   // once the panel is expanded and the full per-guest ledger is in view, it becomes the
   // commit action "Book Now". Same button and handler throughout — only the copy changes.
   const bookActionLabel = isExpanded ? 'Book Now' : 'Review Booking';

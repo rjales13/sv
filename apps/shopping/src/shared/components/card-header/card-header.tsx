@@ -1,18 +1,18 @@
-import { Badge } from '@vikings/ui/components/badge';
-import { cn } from '@vikings/ui/lib/utils';
+import { Badge } from '@vas/ui/components/badge';
+import { cn } from '@vas/ui/lib/utils';
 import { PriceCurrency } from '../price-currency/index.ts';
 
 /*
-  CardHeader — the selected-blue row that tops a cruise or extension result
-  (ShoppingApp_UX-VD, node 748:48042).
+  CardHeader — the selected-blue row that tops a cr or extension result
+  (SApp_UX-VD, node 748:48042).
 
   Figma models this as 11 variants, but they are three orthogonal concerns:
-    • category   — the coloured chip (product line for cruises, position for extensions)
-    • ship/code  — present on cruise rows only, each behind a hairline divider
+    • category   — the coloured chip (product line for crs, position for extensions)
+    • ship/code  — present on cr rows only, each behind a hairline divider
     • price      — "Starting at"/"54 Available" + figure, the figure alone, or SOLD OUT
 
   Expressing those as props rather than 11 variant names keeps the caller honest:
-  a cruise row passes ship + voyageCode, an extension row does not.
+  a cr row passes ship + voyageCode, an extension row does not.
 */
 
 export type CardHeaderCategory =
@@ -38,7 +38,7 @@ export type CardHeaderCategory =
 */
 export const CATEGORY_MARK: Record<CardHeaderCategory, { label: string; fill: string }> = {
   oceans: { label: 'Oceans', fill: 'bg-fjord text-ink-on-brand' },
-  rivers: { label: 'Rivers', fill: 'bg-viking-red text-ink-on-brand' },
+  rivers: { label: 'Rivers', fill: 'bg-VA-red text-ink-on-brand' },
   expeditions: { label: 'Expeditions', fill: 'bg-ink-tertiary text-ink-on-brand' },
   mississippi: { label: 'Mississippi', fill: 'bg-success text-ink-on-brand' },
   pre: { label: 'PRE', fill: 'bg-info text-ink-on-brand' },
@@ -52,14 +52,14 @@ export const CATEGORY_MARK: Record<CardHeaderCategory, { label: string; fill: st
 const META = 'text-overline font-semibold uppercase tracking-overline text-ink-tertiary';
 
 export interface CardHeaderProps {
-  /** Product line (cruise) or position (extension) — sets the chip label and fill. */
+  /** Product line (cr) or position (extension) — sets the chip label and fill. */
   category: CardHeaderCategory;
   title: string;
-  /** Leading meta item: fare currency ("EUR") on cruises, duration ("4 Nights") on extensions. */
+  /** Leading meta item: fare currency ("EUR") on crs, duration ("4 Nights") on extensions. */
   meta: string;
-  /** Ship name. Cruise rows only — renders after a hairline divider. */
+  /** Ship name. cr rows only — renders after a hairline divider. */
   ship?: string;
-  /** Voyage code. Cruise rows only — renders after a hairline divider. */
+  /** Voyage code. cr rows only — renders after a hairline divider. */
   voyageCode?: string;
   /** Replaces the whole price block with a SOLD OUT badge. */
   soldOut?: boolean;

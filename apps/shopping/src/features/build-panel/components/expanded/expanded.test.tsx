@@ -4,12 +4,12 @@ import { describe, expect, it, vi } from 'vitest';
 import '../../../../test-setup.ts';
 import { BuildPanelExpanded, type BuildPanelExpandedProps } from './expanded.tsx';
 
-const cruise = {
-  kind: 'cruise' as const,
+const cr = {
+  kind: 'cr' as const,
   lines: [
-    { variant: 'list' as const, label: 'Cruise Tour Fare', amount: '$11,349.00' },
+    { variant: 'list' as const, label: 'cr Tour Fare', amount: '$11,349.00' },
     { variant: 'discount' as const, label: 'Past Guest Level 2 Discount', amount: '$100.00' },
-    { variant: 'subtotal' as const, label: 'Cruise Subtotal', amount: '$10,949.00' },
+    { variant: 'subtotal' as const, label: 'cr Subtotal', amount: '$10,949.00' },
   ],
 };
 
@@ -17,7 +17,7 @@ const baseProps: BuildPanelExpandedProps = {
   title: 'Paris to the Swiss Alps',
   startDate: '01 JUL 2027 (MON)',
   endDate: '12 JUL 2027 (MON)',
-  details: ['Viking Herja', 'HRJ270426T', '7 Cruise Nights / 11 Total Nights'],
+  details: ['VA Herja', 'HRJ270426T', '7 cr Nights / 11 Total Nights'],
   promoCode: 'AGRDN26-3',
   guests: [
     {
@@ -25,7 +25,7 @@ const baseProps: BuildPanelExpandedProps = {
       name: 'Mr. John Smith Whitcombe',
       tpp: { eligible: true, included: true, amount: '$749.00' },
       sections: [
-        cruise,
+        cr,
         { kind: 'hotel', lines: [{ variant: 'list', label: 'Hotel', amount: '$2,229.00' }] },
       ],
       totalLabel: 'Guest 1 Total',
@@ -35,7 +35,7 @@ const baseProps: BuildPanelExpandedProps = {
       label: 'Guest 2',
       name: 'Ms. Mary Stone Davis',
       tpp: { eligible: false, reason: 'Non US Resident' },
-      sections: [cruise],
+      sections: [cr],
       totalLabel: 'Guest 2 Total',
       total: '$25,696.00',
     },
@@ -48,7 +48,7 @@ const renderPanel = (props: Partial<BuildPanelExpandedProps> = {}) =>
   render(<BuildPanelExpanded {...baseProps} {...props} />);
 
 describe('BuildPanelExpanded — header', () => {
-  it('shows the cruise title, dates, details and promo code', () => {
+  it('shows the cr title, dates, details and promo code', () => {
     renderPanel();
     expect(screen.getByRole('heading', { name: 'Paris to the Swiss Alps' })).toBeInTheDocument();
     expect(screen.getByText('01 JUL 2027 (MON)')).toBeInTheDocument();
@@ -83,7 +83,7 @@ describe('BuildPanelExpanded — guest columns', () => {
     renderPanel();
     const guest1 = screen.getByRole('group', { name: 'Guest 1' });
     expect(within(guest1).getByText('Mr. John Smith Whitcombe')).toBeInTheDocument();
-    expect(within(guest1).getByText('Cruise Tour Fare')).toBeInTheDocument();
+    expect(within(guest1).getByText('cr Tour Fare')).toBeInTheDocument();
     expect(within(guest1).getByText('– $100.00')).toBeInTheDocument();
     expect(within(guest1).getByText('Guest 1 Total')).toBeInTheDocument();
     expect(within(guest1).getByText('$23,984.00')).toBeInTheDocument();

@@ -1,5 +1,5 @@
 {
-  "extends": "@vikings/typescript-config/react-library.json",
+  "extends": "@vas/typescript-config/react-library.json",
   "compilerOptions": {
     "types": []
   },

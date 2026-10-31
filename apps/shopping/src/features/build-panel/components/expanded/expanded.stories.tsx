@@ -2,13 +2,13 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { expect, fn, userEvent, within } from 'storybook/test';
 import { BuildPanelExpanded, type BuildPanelSection } from './expanded.tsx';
 
-const CRUISE: BuildPanelSection = {
-  kind: 'cruise',
+const cr: BuildPanelSection = {
+  kind: 'cr',
   lines: [
-    { variant: 'list', label: 'Cruise Tour Fare', amount: '$11,349.00' },
+    { variant: 'list', label: 'cr Tour Fare', amount: '$11,349.00' },
     { variant: 'discount', label: 'Past Guest Level 2 Discount', amount: '$100.00' },
     { variant: 'discount', label: 'Promo Code: AGRDN26-3 DN26 Promotion - USD', amount: '$300.00' },
-    { variant: 'subtotal', label: 'Cruise Subtotal', amount: '$10,949.00' },
+    { variant: 'subtotal', label: 'cr Subtotal', amount: '$10,949.00' },
   ],
 };
 
@@ -32,9 +32,9 @@ const meta = {
     startDate: '01 JUL 2027 (MON)',
     endDate: '12 JUL 2027 (MON)',
     details: [
-      'Viking Herja',
+      'VA Herja',
       'hrj270426t',
-      '7 Cruise Nights / 11 Total Nights',
+      '7 cr Nights / 11 Total Nights',
       'French Balcony (C) Stateroom 204',
     ],
     promoCode: 'AGRDN26-3',
@@ -44,14 +44,14 @@ const meta = {
         name: 'Mr. John Smith Whitcombe',
         tpp: { eligible: true, included: true, amount: '$749.00', onIncludedChange: fn() },
         sections: [
-          CRUISE,
+          cr,
           HOTEL,
           {
             kind: 'air',
             lines: [
-              { variant: 'list', label: 'Viking Air (AUS Roundtrip) (Business D)', amount: '$6,098.00' },
-              { variant: 'discount', label: 'Viking Air Discounts', amount: '$400' },
-              { variant: 'subtotal', label: 'Viking Air Subtotal', amount: '$5,698.00' },
+              { variant: 'list', label: 'VA Air (AUS Roundtrip) (Business D)', amount: '$6,098.00' },
+              { variant: 'discount', label: 'VA Air Discounts', amount: '$400' },
+              { variant: 'subtotal', label: 'VA Air Subtotal', amount: '$5,698.00' },
             ],
           },
           {
@@ -67,17 +67,17 @@ const meta = {
         name: 'Ms. Mary Stone Davis',
         tpp: { eligible: false, reason: 'Non US Resident' },
         sections: [
-          CRUISE,
+          cr,
           HOTEL,
           {
             kind: 'air',
             lines: [
               {
                 variant: 'list',
-                label: 'Viking Air (YMQ Outbound - AUS Return) (Business-D)',
+                label: 'VA Air (YMQ Outbound - AUS Return) (Business-D)',
                 amount: '$8,149.00',
               },
-              { variant: 'subtotal', label: 'Viking Air Subtotal', amount: '$8,149.00' },
+              { variant: 'subtotal', label: 'VA Air Subtotal', amount: '$8,149.00' },
             ],
           },
         ],

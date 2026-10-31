@@ -2,14 +2,14 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import '../../test-setup.ts';
-import type { CategoryPricingAvailability } from '@vikings/contracts';
-import type { CruiseChoices } from '@/store/cruise-workspace.store.ts';
+import type { CategoryPricingAvailability } from '@vas/contracts';
+import type { crChoices } from '@/store/cr-workspace.store.ts';
 import { BuildPanel } from './build-panel.tsx';
 
-const cruise: CategoryPricingAvailability = {
-  cruiseId: 'HRJ270426T',
-  cruiseName: 'Paris to the Swiss Alps',
-  shipName: 'Viking Herja',
+const cr: CategoryPricingAvailability = {
+  crId: 'HRJ270426T',
+  crName: 'Paris to the Swiss Alps',
+  shipName: 'VA Herja',
   nights: 7,
   sailingDateFrom: '2027-07-01',
   sailingDateTo: '2027-07-12',
@@ -35,7 +35,7 @@ const cruise: CategoryPricingAvailability = {
   ],
 };
 
-const emptyChoices: CruiseChoices = {
+const emptyChoices: crChoices = {
   extensionIds: [],
   air: {},
   travelProtection: {},
@@ -45,7 +45,7 @@ describe('BuildPanel — price before and after a cabin is selected', () => {
   it('shows the zero footer until a cabin is selected', () => {
     const { container } = render(
       <BuildPanel
-        cruise={cruise}
+        cr={cr}
         choices={emptyChoices}
         guests={2}
         currency="USD"
@@ -59,7 +59,7 @@ describe('BuildPanel — price before and after a cabin is selected', () => {
   it('bills the selected cabin once one is held', () => {
     const { container } = render(
       <BuildPanel
-        cruise={cruise}
+        cr={cr}
         choices={{
           ...emptyChoices,
           stateroom: { categoryAbbrev: 'A', cabinNumber: '101', deck: 1 },
@@ -78,7 +78,7 @@ describe('BuildPanel — collapsed state (default)', () => {
   it('renders collapsed by default showing GROSS TOTAL', () => {
     render(
       <BuildPanel
-        cruise={cruise}
+        cr={cr}
         choices={emptyChoices}
         guests={2}
         currency="USD"
@@ -92,7 +92,7 @@ describe('BuildPanel — collapsed state (default)', () => {
   it('renders action buttons in collapsed state', () => {
     render(
       <BuildPanel
-        cruise={cruise}
+        cr={cr}
         choices={emptyChoices}
         guests={2}
         currency="USD"
@@ -108,7 +108,7 @@ describe('BuildPanel — collapsed state (default)', () => {
   it('does not render the expanded breakdown by default', () => {
     render(
       <BuildPanel
-        cruise={cruise}
+        cr={cr}
         choices={emptyChoices}
         guests={2}
         currency="USD"
@@ -125,7 +125,7 @@ describe('BuildPanel — expanded state', () => {
   it('expands when the BREAKDOWN toggle is clicked', () => {
     render(
       <BuildPanel
-        cruise={cruise}
+        cr={cr}
         choices={emptyChoices}
         guests={2}
         currency="USD"
@@ -137,13 +137,13 @@ describe('BuildPanel — expanded state', () => {
     expect(screen.getByRole('heading', { name: 'Paris to the Swiss Alps' })).toBeInTheDocument();
   });
 
-  // The cruise-detail tab bar is `sticky z-10`; an un-layered backdrop let it paint on top,
+  // The cr-detail tab bar is `sticky z-10`; an un-layered backdrop let it paint on top,
   // leaving the tabs bright and clickable over the dimmed page. jsdom has no layout, so the
   // stacking order is pinned by class: backdrop above z-10 chrome, drawer above the backdrop.
   it('layers the backdrop over sticky page chrome and the drawer over the backdrop', () => {
     render(
       <BuildPanel
-        cruise={cruise}
+        cr={cr}
         choices={emptyChoices}
         guests={2}
         currency="USD"
@@ -158,7 +158,7 @@ describe('BuildPanel — expanded state', () => {
   it('collapses back when the Collapse button inside the expanded panel is clicked', () => {
     render(
       <BuildPanel
-        cruise={cruise}
+        cr={cr}
         choices={emptyChoices}
         guests={2}
         currency="USD"
@@ -174,10 +174,10 @@ describe('BuildPanel — expanded state', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('shows the cruise name and dates in the expanded header', () => {
+  it('shows the cr name and dates in the expanded header', () => {
     render(
       <BuildPanel
-        cruise={cruise}
+        cr={cr}
         choices={emptyChoices}
         guests={1}
         currency="USD"
@@ -192,22 +192,22 @@ describe('BuildPanel — expanded state', () => {
   it('shows the promo code badge when a promo code is present', () => {
     render(
       <BuildPanel
-        cruise={cruise}
+        cr={cr}
         choices={emptyChoices}
         guests={1}
         currency="USD"
-        promoCodes={['VIKING10']}
+        promoCodes={['VA10']}
       />,
     );
     fireEvent.click(screen.getByRole('button', { name: /^breakdown$/i }));
-    expect(screen.getByText('PROMO CODE: VIKING10')).toBeInTheDocument();
+    expect(screen.getByText('PROMO CODE: VA10')).toBeInTheDocument();
   });
 
   it('fires onTppChange when the TPP checkbox is toggled', () => {
     const onTppChange = vi.fn();
     render(
       <BuildPanel
-        cruise={cruise}
+        cr={cr}
         choices={emptyChoices}
         guests={1}
         currency="USD"

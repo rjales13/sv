@@ -10,7 +10,7 @@ import { defineConfig, type Plugin } from 'vite';
 // fracture the shared peer graph.
 //
 // Plugins: @vitejs/plugin-react (the JSX transform + Fast Refresh) and @tailwindcss/vite
-// (Tailwind 4's compiler — it turns the imported `@vikings/ui/globals.css` into the real DS
+// (Tailwind 4's compiler — it turns the imported `@vas/ui/globals.css` into the real DS
 // theme; there is no PostCSS step). The root vitest.config.ts stays the test runner; this
 // config never runs tests.
 /**
@@ -26,7 +26,7 @@ import { defineConfig, type Plugin } from 'vite';
  */
 function excludeMockServiceWorker(): Plugin {
   return {
-    name: 'vikings:exclude-mock-service-worker',
+    name: 'VAs:exclude-mock-service-worker',
     apply: 'build',
     async closeBundle() {
       await rm(fileURLToPath(new URL('dist/mockServiceWorker.js', import.meta.url)), {

@@ -1,16 +1,16 @@
-import { Badge } from '@vikings/ui/components/badge';
-import { Button } from '@vikings/ui/components/button';
-import { Checkbox } from '@vikings/ui/components/checkbox';
-import { Icon, type IconName } from '@vikings/ui/components/icon';
-import { Separator } from '@vikings/ui/components/separator';
-import { cn } from '@vikings/ui/lib/utils';
+import { Badge } from '@vas/ui/components/badge';
+import { Button } from '@vas/ui/components/button';
+import { Checkbox } from '@vas/ui/components/checkbox';
+import { Icon, type IconName } from '@vas/ui/components/icon';
+import { Separator } from '@vas/ui/components/separator';
+import { cn } from '@vas/ui/lib/utils';
 import { Fragment, useId } from 'react';
 import { PanelFooter } from '@/features/build-panel/components/panel-footer';
 import { PriceLineItem } from '@/shared/components/price-line-item';
 
 /*
   BuildPanelExpanded — the Build Panel opened to its per-guest price breakdown
-  (ShoppingApp_UX-VD, instance 3414:204668). Header, one column per guest, and the
+  (SApp_UX-VD, instance 3414:204668). Header, one column per guest, and the
   existing PanelFooter in its expanded "direct" variant.
 
   Code connections used:
@@ -32,7 +32,7 @@ import { PriceLineItem } from '@/shared/components/price-line-item';
   is kept but hidden. Figma's scroll thumb is drawn as a native thin scrollbar.
 */
 
-export type BuildPanelSectionKind = 'cruise' | 'hotel' | 'air' | 'protection';
+export type BuildPanelSectionKind = 'cr' | 'hotel' | 'air' | 'protection';
 
 export interface BuildPanelPriceLine {
   variant: 'list' | 'discount' | 'subtotal';
@@ -68,7 +68,7 @@ export interface BuildPanelGuest {
 }
 
 export interface BuildPanelExpandedProps {
-  /** Cruise name, e.g. "Paris to the Swiss Alps". */
+  /** cr name, e.g. "Paris to the Swiss Alps". */
   title: string;
   startDate: string;
   endDate: string;
@@ -87,7 +87,7 @@ export interface BuildPanelExpandedProps {
 }
 
 const SECTION_ICON: Record<BuildPanelSectionKind, IconName> = {
-  cruise: 'IconContentDirectionsBoat',
+  cr: 'IconContentDirectionsBoat',
   hotel: 'IconContentHotel16',
   air: 'IconTravelFlightOutline16',
   protection: 'IconActivityBeachAccess16',

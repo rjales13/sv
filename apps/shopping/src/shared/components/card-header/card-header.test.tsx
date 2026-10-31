@@ -8,10 +8,10 @@ import { CardHeader, type CardHeaderCategory } from './card-header.tsx';
 // that a sales agent reads the right row: the right product line, the right
 // ship and voyage code, and — above all — never a price on a sold-out sailing.
 
-const CRUISE = {
+const cr = {
   title: 'Grand European Tour',
   meta: 'EUR',
-  ship: 'Viking Shipxxx',
+  ship: 'VA Shipxxx',
   voyageCode: 'VIL00000000',
   priceLabel: 'Starting at',
 } as const;
@@ -34,7 +34,7 @@ describe('CardHeader — category chip', () => {
     ['post-stopover', 'POST STOPOVER'],
     ['land-package', 'INCLUDED LAND PACKAGE'],
   ] as [CardHeaderCategory, string][])('renders %s as "%s"', (category, label) => {
-    render(<CardHeader {...CRUISE} category={category} />);
+    render(<CardHeader {...cr} category={category} />);
     expect(screen.getByText(label)).toBeInTheDocument();
   });
 
@@ -47,17 +47,17 @@ describe('CardHeader — category chip', () => {
   });
 });
 
-describe('CardHeader — cruise rows', () => {
+describe('CardHeader — cr rows', () => {
   it('renders the title and the full meta strip', () => {
-    render(<CardHeader {...CRUISE} category="oceans" />);
+    render(<CardHeader {...cr} category="oceans" />);
     expect(screen.getByText('Grand European Tour')).toBeInTheDocument();
     expect(screen.getByText('EUR')).toBeInTheDocument();
-    expect(screen.getByText('Viking Shipxxx')).toBeInTheDocument();
+    expect(screen.getByText('VA Shipxxx')).toBeInTheDocument();
     expect(screen.getByText('VIL00000000')).toBeInTheDocument();
   });
 
   it('renders the price behind its prefix', () => {
-    render(<CardHeader {...CRUISE} category="oceans" amount="$7,250.00" />);
+    render(<CardHeader {...cr} category="oceans" amount="$7,250.00" />);
     expect(screen.getByText('Starting at')).toBeInTheDocument();
     expect(screen.getByText('$7,250.00')).toBeInTheDocument();
     expect(screen.getByText('USD')).toBeInTheDocument();
@@ -68,7 +68,7 @@ describe('CardHeader — extension rows', () => {
   it('omits the ship and voyage code when they are not supplied', () => {
     render(<CardHeader {...EXTENSION} category="pre" />);
     expect(screen.getByText('4 Nights')).toBeInTheDocument();
-    expect(screen.queryByText('Viking Shipxxx')).not.toBeInTheDocument();
+    expect(screen.queryByText('VA Shipxxx')).not.toBeInTheDocument();
     expect(screen.queryByText('VIL00000000')).not.toBeInTheDocument();
   });
 
@@ -86,8 +86,8 @@ describe('CardHeader — extension rows', () => {
   });
 
   it('renders a lone divider when only one of ship/voyageCode is given', () => {
-    render(<CardHeader {...EXTENSION} category="pre" ship="Viking Sky" />);
-    expect(screen.getByText('Viking Sky')).toBeInTheDocument();
+    render(<CardHeader {...EXTENSION} category="pre" ship="VA Sky" />);
+    expect(screen.getByText('VA Sky')).toBeInTheDocument();
     expect(screen.queryByText('VIL00000000')).not.toBeInTheDocument();
   });
 });
@@ -95,7 +95,7 @@ describe('CardHeader — extension rows', () => {
 describe('CardHeader — sold out', () => {
   // Quoting a price on a sold-out sailing is the failure that reaches a customer.
   it('replaces the whole price block with the sold-out badge', () => {
-    render(<CardHeader {...CRUISE} category="oceans" soldOut amount="$4,999.00" />);
+    render(<CardHeader {...cr} category="oceans" soldOut amount="$4,999.00" />);
     expect(screen.getByText(/sold out/i)).toBeInTheDocument();
     expect(screen.queryByText('$4,999.00')).not.toBeInTheDocument();
     expect(screen.queryByText('Starting at')).not.toBeInTheDocument();
@@ -103,7 +103,7 @@ describe('CardHeader — sold out', () => {
   });
 
   it('keeps the voyage identifiers visible so the row stays identifiable', () => {
-    render(<CardHeader {...CRUISE} category="oceans" soldOut />);
+    render(<CardHeader {...cr} category="oceans" soldOut />);
     expect(screen.getByText('Grand European Tour')).toBeInTheDocument();
     expect(screen.getByText('VIL00000000')).toBeInTheDocument();
   });
@@ -117,20 +117,20 @@ describe('CardHeader — sold out', () => {
 
 describe('CardHeader — presentation', () => {
   it('hides the meta dividers from assistive tech', () => {
-    const { container } = render(<CardHeader {...CRUISE} category="oceans" />);
+    const { container } = render(<CardHeader {...cr} category="oceans" />);
     // Two hairlines: before the ship and before the voyage code.
     expect(container.querySelectorAll('[aria-hidden="true"]')).toHaveLength(2);
   });
 
   it('applies a caller className to the row', () => {
     const { container } = render(
-      <CardHeader {...CRUISE} category="oceans" className="rounded-t-md" />,
+      <CardHeader {...cr} category="oceans" className="rounded-t-md" />,
     );
     expect(container.firstElementChild).toHaveClass('rounded-t-md');
   });
 
   it('renders the caller currency code verbatim', () => {
-    render(<CardHeader {...CRUISE} category="oceans" currencyCode="GBP" />);
+    render(<CardHeader {...cr} category="oceans" currencyCode="GBP" />);
     expect(screen.getByText('GBP')).toBeInTheDocument();
     expect(screen.queryByText('USD')).not.toBeInTheDocument();
   });

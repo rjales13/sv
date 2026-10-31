@@ -64,7 +64,7 @@ export const ErrorAlert: Story = {
   args: {
     variant: 'error',
     title: 'Search failed',
-    description: 'Could not retrieve cruise results. Check your connection and try again.',
+    description: 'Could not retrieve cr results. Check your connection and try again.',
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -126,7 +126,7 @@ export const NoIcon: Story = {
     variant: 'error',
     showIcon: false,
     title: 'Search failed',
-    description: 'Could not retrieve cruise results.',
+    description: 'Could not retrieve cr results.',
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);

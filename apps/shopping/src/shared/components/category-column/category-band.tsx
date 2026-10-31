@@ -1,11 +1,11 @@
-import { Separator } from '@vikings/ui/components/separator';
-import { cn } from '@vikings/ui/lib/utils';
+import { Separator } from '@vas/ui/components/separator';
+import { cn } from '@vas/ui/lib/utils';
 import { Fragment } from 'react';
 import { CategoryColumn, type CategoryColumnProps } from './category-column.tsx';
 
 /*
   CategoryBand — one row of category columns, separated by hairline rules
-  (ShoppingApp_UX-VD, node 2562:61098).
+  (SApp_UX-VD, node 2562:61098).
 
   `items-stretch` is what makes the rules work: Separator carries
   `data-vertical:self-stretch`, so each one spans the tallest column in the band

@@ -2,14 +2,14 @@ import figma from '@figma/code-connect';
 import { CardHeader } from '../card-header/card-header';
 
 /*
-  Code Connect for CardHeader (ShoppingApp_UX-VD, node 748:48042).
+  Code Connect for CardHeader (SApp_UX-VD, node 748:48042).
 
   Figma models this as 11 flat variants on `Property 1`; the React component
   takes props instead (category / ship / voyageCode / soldOut / priceLabel).
   That means a Figma variant maps to a COMBINATION of props, not a single enum
   value, so the variants are split across connections by JSX shape:
 
-    • base      — the four cruise rows that show a price. Same shape, only the
+    • base      — the four cr rows that show a price. Same shape, only the
                   category chip differs, so one `figma.enum` covers all four.
     • filtered  — every row whose shape differs: sold-out rows drop the price
                   block, extension rows drop ship/voyageCode, and the land
@@ -18,16 +18,16 @@ import { CardHeader } from '../card-header/card-header';
 */
 
 const URL =
-  'https://www.figma.com/design/savWyo2gT0Xz4lqin0fJ7r/ShoppingApp_UX-VD?node-id=748-48042';
+  'https://www.figma.com/design/savWyo2gT0Xz4lqin0fJ7r/SApp_UX-VD?node-id=748-48042';
 
-// ── Cruise rows with a price — ship + voyage code + "Starting at" ────────────
+// ── cr rows with a price — ship + voyage code + "Starting at" ────────────
 figma.connect(CardHeader, URL, {
   props: {
     category: figma.enum('Property 1', {
-      'cruise-default': 'oceans',
-      'cruise-river': 'rivers',
-      'cruise-expedition': 'expeditions',
-      'cruise-mississippi': 'mississippi',
+      'cr-default': 'oceans',
+      'cr-river': 'rivers',
+      'cr-expedition': 'expeditions',
+      'cr-mississippi': 'mississippi',
     }),
   },
   example: ({ category }) => (
@@ -35,7 +35,7 @@ figma.connect(CardHeader, URL, {
       category={category}
       title="Grand European Tour"
       meta="EUR"
-      ship="Viking Shipxxx"
+      ship="VA Shipxxx"
       voyageCode="VIL00000000"
       priceLabel="Starting at"
       amount="$4,999.00"
@@ -44,15 +44,15 @@ figma.connect(CardHeader, URL, {
   ),
 });
 
-// ── Cruise row, no inventory — price block becomes a SOLD OUT badge ──────────
+// ── cr row, no inventory — price block becomes a SOLD OUT badge ──────────
 figma.connect(CardHeader, URL, {
-  variant: { 'Property 1': 'cruise-sold-out' },
+  variant: { 'Property 1': 'cr-sold-out' },
   example: () => (
     <CardHeader
       category="oceans"
       title="Grand European Tour"
       meta="EUR"
-      ship="Viking Shipxxx"
+      ship="VA Shipxxx"
       voyageCode="VIL00000000"
       soldOut
     />

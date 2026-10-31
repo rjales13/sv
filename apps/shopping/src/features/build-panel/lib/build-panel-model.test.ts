@@ -1,10 +1,10 @@
 // @vitest-environment node
 
-import type { CategoryPricingAvailability } from '@vikings/contracts';
+import type { CategoryPricingAvailability } from '@vas/contracts';
 import { describe, expect, it } from 'vitest';
-import { SAMPLE_AIR_PRICING } from '@/features/cruise-details/test-support/air-pricing-stub.ts';
-import { SAMPLE_EXTENSIONS } from '@/features/cruise-details/test-support/extensions-stub.ts';
-import type { CruiseChoices } from '@/store/cruise-workspace.store.ts';
+import { SAMPLE_AIR_PRICING } from '@/features/cr-details/test-support/air-pricing-stub.ts';
+import { SAMPLE_EXTENSIONS } from '@/features/cr-details/test-support/extensions-stub.ts';
+import type { crChoices } from '@/store/cr-workspace.store.ts';
 import {
   MOCK_GUEST_NAMES,
   TPP_PRICE_USD,
@@ -12,10 +12,10 @@ import {
   toGuestLabel,
 } from './build-panel-model.ts';
 
-const cruise: CategoryPricingAvailability = {
-  cruiseId: 'HRJ270426T',
-  cruiseName: 'Paris to the Swiss Alps',
-  shipName: 'Viking Herja',
+const cr: CategoryPricingAvailability = {
+  crId: 'HRJ270426T',
+  crName: 'Paris to the Swiss Alps',
+  shipName: 'VA Herja',
   nights: 7,
   sailingDateFrom: '2027-07-01',
   sailingDateTo: '2027-07-12',
@@ -41,16 +41,16 @@ const cruise: CategoryPricingAvailability = {
   ],
 };
 
-const firstCategory = cruise.categories[0] as CategoryPricingAvailability['categories'][number];
+const firstCategory = cr.categories[0] as CategoryPricingAvailability['categories'][number];
 
-const emptyChoices: CruiseChoices = {
+const emptyChoices: crChoices = {
   extensionIds: [],
   air: {},
   travelProtection: {},
 };
 
 /** Add-ons are only billed once a cabin is held, so every pricing test starts from one. */
-const withCabin: CruiseChoices = {
+const withCabin: crChoices = {
   ...emptyChoices,
   stateroom: { categoryAbbrev: 'A', cabinNumber: '101', deck: 1 },
 };
@@ -66,9 +66,9 @@ describe('toGuestLabel', () => {
 });
 
 describe('toBuildPanelModel', () => {
-  it('maps cruise name and formatted dates into the header', () => {
+  it('maps cr name and formatted dates into the header', () => {
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices: emptyChoices,
       guests: 1,
       currency: 'USD',
@@ -79,33 +79,33 @@ describe('toBuildPanelModel', () => {
     expect(model.endDate).toBe('12 JUL 2027 (MON)');
   });
 
-  it('includes ship, cruise id, and nights in details', () => {
+  it('includes ship, cr id, and nights in details', () => {
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices: emptyChoices,
       guests: 1,
       currency: 'USD',
       promoCodes: [],
     });
-    expect(model.details).toContain('VIKING HERJA');
+    expect(model.details).toContain('VA HERJA');
     expect(model.details).toContain('HRJ270426T');
-    expect(model.details).toContain('7 Cruise Nights');
+    expect(model.details).toContain('7 cr Nights');
   });
 
-  it('shows cruise and total nights in details for a package (R3.2)', () => {
+  it('shows cr and total nights in details for a package (R3.2)', () => {
     const model = toBuildPanelModel({
-      cruise: { ...cruise, totalNights: 11 },
+      cr: { ...cr, totalNights: 11 },
       choices: emptyChoices,
       guests: 1,
       currency: 'USD',
       promoCodes: [],
     });
-    expect(model.details).toContain('7 Cruise Nights / 11 Total Nights');
+    expect(model.details).toContain('7 cr Nights / 11 Total Nights');
   });
 
   it('carries the first promo code into the model', () => {
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices: emptyChoices,
       guests: 1,
       currency: 'USD',
@@ -114,11 +114,11 @@ describe('toBuildPanelModel', () => {
     expect(model.promoCode).toBe('AGRDN26-3');
   });
 
-  // VCX-10484 R6 / AC 6: the badge names the promo that priced the cruise. A partial code finds
+  // VCX-10484 R6 / AC 6: the badge names the promo that priced the cr. A partial code finds
   // a promo by part of its code, so what the agent typed is not always what was applied.
-  it('calls out the promo that priced the cruise over the code the agent typed', () => {
+  it('calls out the promo that priced the cr over the code the agent typed', () => {
     const model = toBuildPanelModel({
-      cruise: { ...cruise, appliedPromoCode: 'TIRRCR-156' },
+      cr: { ...cr, appliedPromoCode: 'TIRRCR-156' },
       choices: emptyChoices,
       guests: 1,
       currency: 'USD',
@@ -128,9 +128,9 @@ describe('toBuildPanelModel', () => {
   });
 
   // The mock and direct-EVO adapters do not say which promo priced a sailing.
-  it('falls back to the typed code, without its spaces, when the cruise names none', () => {
+  it('falls back to the typed code, without its spaces, when the cr names none', () => {
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices: emptyChoices,
       guests: 1,
       currency: 'USD',
@@ -141,7 +141,7 @@ describe('toBuildPanelModel', () => {
 
   it('omits promoCode when the typed code is only spaces', () => {
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices: emptyChoices,
       guests: 1,
       currency: 'USD',
@@ -152,7 +152,7 @@ describe('toBuildPanelModel', () => {
 
   it('omits promoCode when there are no promo codes', () => {
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices: emptyChoices,
       guests: 1,
       currency: 'USD',
@@ -163,7 +163,7 @@ describe('toBuildPanelModel', () => {
 
   it('produces one guest column per guest count', () => {
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices: emptyChoices,
       guests: 2,
       currency: 'USD',
@@ -178,10 +178,10 @@ describe('toBuildPanelModel', () => {
     // VCX-10332: the Staterooms screen presents no cabin pre-selected, so there is nothing to
     // price yet. The old fallback billed categories[0], which EVO orders price-DESCENDING —
     // it quoted the sailing's most expensive cabin.
-    const unpriced = (choices: CruiseChoices) =>
+    const unpriced = (choices: crChoices) =>
       toBuildPanelModel({
-        cruise: {
-          ...cruise,
+        cr: {
+          ...cr,
           categories: [
             { ...firstCategory, abbrev: 'OS', doublePrice: 30000, singlePrice: 45000 },
             firstCategory,
@@ -203,12 +203,12 @@ describe('toBuildPanelModel', () => {
       expect(model.guests[0]?.sections[0]?.lines[0]?.amount).toBe('$0.00');
     });
 
-    it('bills a chosen extension before the cabin, with the cruise fare still at zero', () => {
+    it('bills a chosen extension before the cabin, with the cr fare still at zero', () => {
       // An extension has its own price, independent of the stateroom: an agent who books the
       // Milan pre-stay first must see it in the breakdown and the total straight away.
       const model = unpriced({ ...emptyChoices, extensionIds: ['050'] });
       expect(model.isPriced).toBe(true);
-      expect(model.guests[0]?.sections.map((s) => s.kind)).toEqual(['cruise', 'hotel']);
+      expect(model.guests[0]?.sections.map((s) => s.kind)).toEqual(['cr', 'hotel']);
       expect(model.guests[0]?.sections[0]?.lines[0]?.amount).toBe('$0.00');
       expect(model.guests.map((g) => g.total)).toEqual(['$1,500.00', '$1,500.00']);
       // The breakdown still adds up to the total it sits under.
@@ -231,7 +231,7 @@ describe('toBuildPanelModel', () => {
       });
       expect(model.grossTotal).toBe('$0.00');
       // A breakdown listing $5,898 of air under a $0.00 total would not add up.
-      expect(model.guests[0]?.sections.map((s) => s.kind)).toEqual(['cruise']);
+      expect(model.guests[0]?.sections.map((s) => s.kind)).toEqual(['cr']);
     });
 
     it('stays at zero when the held category is no longer on the sailing', () => {
@@ -244,42 +244,42 @@ describe('toBuildPanelModel', () => {
     });
   });
 
-  // Viking prices a cruise tour as one fare covering the sailing AND its land stays, so the
-  // breakdown names it "Cruise Tour Fare"; a cruise-only sailing keeps "Cruise Fare".
+  // VA prices a cr tour as one fare covering the sailing AND its land stays, so the
+  // breakdown names it "cr Tour Fare"; a cr-only sailing keeps "cr Fare".
   describe('fare label', () => {
     const fareLabel = (c: CategoryPricingAvailability) =>
       toBuildPanelModel({
-        cruise: c,
+        cr: c,
         choices: withCabin,
         guests: 1,
         currency: 'USD',
         promoCodes: [],
       }).guests[0]?.sections[0]?.lines[0]?.label;
 
-    it('says "Cruise Fare" for a cruise-only sailing', () => {
-      expect(fareLabel(cruise)).toBe('Cruise Fare');
+    it('says "cr Fare" for a cr-only sailing', () => {
+      expect(fareLabel(cr)).toBe('cr Fare');
     });
 
-    it('says "Cruise Tour Fare" for a sailing sold with a land package', () => {
+    it('says "cr Tour Fare" for a sailing sold with a land package', () => {
       const tour = {
-        ...cruise,
+        ...cr,
         totalNights: 11,
         landPackage: { start: { date: '2027-06-29', portCode: 'ZRH', portName: 'Zurich' } },
       };
-      expect(fareLabel(tour)).toBe('Cruise Tour Fare');
+      expect(fareLabel(tour)).toBe('cr Tour Fare');
     });
 
     it('treats total nights beyond the sailing as a tour, matching the header', () => {
-      // The header reads "7 Cruise Nights / 11 Total Nights" from the same numbers, so the
-      // breakdown must not call that sailing cruise-only when the package ports are missing.
-      expect(fareLabel({ ...cruise, totalNights: 11 })).toBe('Cruise Tour Fare');
+      // The header reads "7 cr Nights / 11 Total Nights" from the same numbers, so the
+      // breakdown must not call that sailing cr-only when the package ports are missing.
+      expect(fareLabel({ ...cr, totalNights: 11 })).toBe('cr Tour Fare');
     });
   });
 
   it('prices the selected cabin, not the first category', () => {
     const model = toBuildPanelModel({
-      cruise: {
-        ...cruise,
+      cr: {
+        ...cr,
         categories: [{ ...firstCategory, abbrev: 'OS', doublePrice: 30000 }, firstCategory],
       },
       choices: withCabin,
@@ -293,7 +293,7 @@ describe('toBuildPanelModel', () => {
 
   it('formats the gross total in the requested currency', () => {
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices: emptyChoices,
       guests: 2,
       currency: 'USD',
@@ -306,7 +306,7 @@ describe('toBuildPanelModel', () => {
 
   it('marks guest 1 as TPP-eligible and guest 2 as ineligible', () => {
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices: emptyChoices,
       guests: 2,
       currency: 'USD',
@@ -317,12 +317,12 @@ describe('toBuildPanelModel', () => {
   });
 
   it('reflects travelProtection choices from the store', () => {
-    const choices: CruiseChoices = {
+    const choices: crChoices = {
       ...emptyChoices,
       travelProtection: { 'guest-0': true },
     };
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices,
       guests: 1,
       currency: 'USD',
@@ -334,12 +334,12 @@ describe('toBuildPanelModel', () => {
   });
 
   it('includes the stateroom info in details when a cabin is selected', () => {
-    const choices: CruiseChoices = {
+    const choices: crChoices = {
       ...emptyChoices,
       stateroom: { categoryAbbrev: 'A', cabinNumber: '101', deck: 1 },
     };
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices,
       guests: 1,
       currency: 'USD',
@@ -356,7 +356,7 @@ describe('toBuildPanelModel', () => {
 
   it('uses PROTOTYPE_GUESTS names for guest columns', () => {
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices: emptyChoices,
       guests: 2,
       currency: 'USD',
@@ -369,7 +369,7 @@ describe('toBuildPanelModel', () => {
 
   it('groups every selected extension into ONE hotel section with a single subtotal', () => {
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices: { ...withCabin, extensionIds: ['050', '070'] },
       guests: 1,
       currency: 'USD',
@@ -387,14 +387,14 @@ describe('toBuildPanelModel', () => {
 
   it('adds a Travel Protection Plan section when the guest opts in', () => {
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices: { ...withCabin, travelProtection: { 'guest-0': true } },
       guests: 1,
       currency: 'USD',
       promoCodes: [],
     });
     const sections = model.guests[0]?.sections ?? [];
-    expect(sections.map((s) => s.kind)).toEqual(['cruise', 'protection']);
+    expect(sections.map((s) => s.kind)).toEqual(['cr', 'protection']);
     expect(sections[1]?.lines).toEqual([
       { variant: 'list', label: 'Travel Protection Plan', amount: '$749.00' },
     ]);
@@ -404,7 +404,7 @@ describe('toBuildPanelModel', () => {
 
   it('omits the Travel Protection Plan section when the box is unchecked', () => {
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices: { ...withCabin, travelProtection: { 'guest-0': false } },
       guests: 1,
       currency: 'USD',
@@ -416,7 +416,7 @@ describe('toBuildPanelModel', () => {
 
   it('omits the Travel Protection Plan section before a cabin is held', () => {
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices: { ...emptyChoices, travelProtection: { 'guest-0': true } },
       guests: 1,
       currency: 'USD',
@@ -426,9 +426,9 @@ describe('toBuildPanelModel', () => {
     expect(sections.find((s) => s.kind === 'protection')).toBeUndefined();
   });
 
-  it('orders the groups cruise → hotel extensions → Viking Air → TPP', () => {
+  it('orders the groups cr → hotel extensions → VA Air → TPP', () => {
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices: {
         ...withCabin,
         extensionIds: ['050'],
@@ -450,7 +450,7 @@ describe('toBuildPanelModel', () => {
       extensions: SAMPLE_EXTENSIONS,
     });
     expect((model.guests[0]?.sections ?? []).map((s) => s.kind)).toEqual([
-      'cruise',
+      'cr',
       'hotel',
       'air',
       'protection',
@@ -459,9 +459,9 @@ describe('toBuildPanelModel', () => {
 
   it('adds an extension hotel section for a selected extension', () => {
     // Selections are stored by EVO invcode now, not by position in a sorted list.
-    const choices: CruiseChoices = { ...withCabin, extensionIds: ['050'] };
+    const choices: crChoices = { ...withCabin, extensionIds: ['050'] };
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices,
       guests: 1,
       currency: 'USD',
@@ -484,7 +484,7 @@ describe('toBuildPanelModel', () => {
       extensions: [...SAMPLE_EXTENSIONS.extensions].reverse(),
     };
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices: { ...withCabin, extensionIds: ['050'] },
       guests: 1,
       currency: 'USD',
@@ -498,7 +498,7 @@ describe('toBuildPanelModel', () => {
 
   it('omits the extension section entirely while the offering is still loading', () => {
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices: { ...withCabin, extensionIds: ['050'] },
       guests: 1,
       currency: 'USD',
@@ -509,7 +509,7 @@ describe('toBuildPanelModel', () => {
 
   it('includes extension amounts in the gross total', () => {
     const noExtModel = toBuildPanelModel({
-      cruise,
+      cr,
       choices: withCabin,
       guests: 1,
       currency: 'USD',
@@ -517,7 +517,7 @@ describe('toBuildPanelModel', () => {
       extensions: SAMPLE_EXTENSIONS,
     });
     const withExtModel = toBuildPanelModel({
-      cruise,
+      cr,
       choices: { ...withCabin, extensionIds: ['050'] },
       guests: 1,
       currency: 'USD',
@@ -531,8 +531,8 @@ describe('toBuildPanelModel', () => {
     );
   });
 
-  it('adds a Viking Air section when air choice is set for guest 1', () => {
-    const choices: CruiseChoices = {
+  it('adds a VA Air section when air choice is set for guest 1', () => {
+    const choices: crChoices = {
       ...withCabin,
       air: {
         G1: {
@@ -545,7 +545,7 @@ describe('toBuildPanelModel', () => {
       },
     };
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices,
       guests: 1,
       currency: 'USD',
@@ -555,7 +555,7 @@ describe('toBuildPanelModel', () => {
     const sections = model.guests[0]?.sections ?? [];
     const airSection = sections.find((s) => s.kind === 'air');
     expect(airSection).toBeDefined();
-    expect(airSection?.lines.some((l) => l.label.includes('Viking Air'))).toBe(true);
+    expect(airSection?.lines.some((l) => l.label.includes('VA Air'))).toBe(true);
     // Priced from the payload, not from a per-class constant: JFK business is
     // advertised 5898 / sell 5198, so the discount line is the 700 gap between them.
     expect(airSection?.lines.map((l) => l.amount)).toEqual(['$5,898.00', '$700.00', '$5,198.00']);
@@ -563,9 +563,9 @@ describe('toBuildPanelModel', () => {
 
   it('prices a one-way selection as ONE leg, not a round trip', () => {
     // The regression this whole slice exists for: an outbound-only guest used to be billed
-    // the full round-trip fare here and on the Viking Air tab.
+    // the full round-trip fare here and on the VA Air tab.
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices: {
         ...withCabin,
         air: {
@@ -590,7 +590,7 @@ describe('toBuildPanelModel', () => {
   it('omits the air section entirely while fares are still loading', () => {
     // No airPricing means no price. Rendering a $0 air line would read as "air is free".
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices: {
         ...withCabin,
         air: { G1: { includeAirfare: true, originGateway: 'JFK', originClass: 'D' } },
@@ -604,14 +604,14 @@ describe('toBuildPanelModel', () => {
 
   it('includes airfare amounts in the gross total', () => {
     const noAirModel = toBuildPanelModel({
-      cruise,
+      cr,
       choices: withCabin,
       guests: 1,
       currency: 'USD',
       promoCodes: [],
     });
     const withAirModel = toBuildPanelModel({
-      cruise,
+      cr,
       choices: {
         ...withCabin,
         air: {
@@ -636,14 +636,14 @@ describe('toBuildPanelModel', () => {
   });
 
   it('omits air section when includeAirfare is false', () => {
-    const choices: CruiseChoices = {
+    const choices: crChoices = {
       ...withCabin,
       air: {
         G1: { includeAirfare: false },
       },
     };
     const model = toBuildPanelModel({
-      cruise,
+      cr,
       choices,
       guests: 1,
       currency: 'USD',

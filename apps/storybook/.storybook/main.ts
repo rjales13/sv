@@ -10,7 +10,7 @@ const config: StorybookConfig = {
     '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     // Colocated stories from the shopping app feature slices
     '../../shopping/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
-    // Design-system stories live next to their components in @vikings/ui, so a
+    // Design-system stories live next to their components in @vas/ui, so a
     // component and its story move together and neither can be renamed alone.
     '../../../packages/ui/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
@@ -19,7 +19,7 @@ const config: StorybookConfig = {
   viteFinal: (viteConfig) => {
     /*
       Tailwind 4 has no PostCSS step — its Vite plugin is the compiler, and it
-      is what turns `@vikings/ui/globals.css` (imported in preview.tsx) into the
+      is what turns `@vas/ui/globals.css` (imported in preview.tsx) into the
       real DS theme: Open Sans + the fjord/red palette + the `@source` scan of
       this app's stories. We append it rather than replace `plugins` so
       Storybook's own Vite plugins survive.

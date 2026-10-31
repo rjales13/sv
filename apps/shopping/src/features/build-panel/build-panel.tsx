@@ -1,16 +1,16 @@
 import type {
   AirCityPricing,
   CategoryPricingAvailability,
-  CruiseExtensions,
-} from '@vikings/contracts';
+  crExtensions,
+} from '@vas/contracts';
 import { useState } from 'react';
-import type { CruiseChoices } from '@/store/cruise-workspace.store.ts';
+import type { crChoices } from '@/store/cr-workspace.store.ts';
 import { BuildPanelExpanded } from './components/expanded/index.ts';
 import { PanelFooter } from './components/panel-footer/index.ts';
 import { toBuildPanelModel } from './lib/build-panel-model.ts';
 
 /*
-  BuildPanel — the persistent bottom bar that lives in every cruise-detail screen.
+  BuildPanel — the persistent bottom bar that lives in every cr-detail screen.
 
   Architecture:
     - Collapsed (default): PanelFooter renders the gross-total bar with action buttons.
@@ -26,12 +26,12 @@ import { toBuildPanelModel } from './lib/build-panel-model.ts';
 */
 
 export interface BuildPanelProps {
-  cruise: CategoryPricingAvailability;
-  /** The cruise's air fares, so the footer prices air exactly as the Viking Air tab does. */
+  cr: CategoryPricingAvailability;
+  /** The cr's air fares, so the footer prices air exactly as the VA Air tab does. */
   airPricing?: AirCityPricing | undefined;
-  /** The cruise's extension offering, so the footer prices them exactly as the tab does. */
-  extensions?: CruiseExtensions | undefined;
-  choices: CruiseChoices;
+  /** The cr's extension offering, so the footer prices them exactly as the tab does. */
+  extensions?: crExtensions | undefined;
+  choices: crChoices;
   guests: number;
   currency: string;
   promoCodes: readonly string[];
@@ -41,7 +41,7 @@ export interface BuildPanelProps {
 }
 
 export function BuildPanel({
-  cruise,
+  cr,
   airPricing,
   extensions,
   choices,
@@ -54,7 +54,7 @@ export function BuildPanel({
   const [isExpanded, setIsExpanded] = useState(false);
 
   const { isPriced, ...model } = toBuildPanelModel({
-    cruise,
+    cr,
     choices,
     guests,
     currency,
@@ -82,7 +82,7 @@ export function BuildPanel({
     return (
       <>
         {/* Dimmed backdrop — overlays the content above the panel (R3.1). z-40 so it covers
-            sticky page chrome (the cruise tab bar is z-10), while staying under the drawer. */}
+            sticky page chrome (the cr tab bar is z-10), while staying under the drawer. */}
         <div
           aria-hidden="true"
           data-testid="build-panel-backdrop"

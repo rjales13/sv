@@ -1,13 +1,13 @@
 import type { Preview } from '@storybook/react-vite';
-import { TooltipProvider } from '@vikings/ui/components/tooltip';
-import '@vikings/ui/globals.css';
+import { TooltipProvider } from '@vas/ui/components/tooltip';
+import '@vas/ui/globals.css';
 
 /*
-  Viking DS Storybook preview. The DS token layer is imported once here so every
+  VA DS Storybook preview. The DS token layer is imported once here so every
   story renders on the real theme (Open Sans, the fjord/red palette, the page
   surface). The system is light-only, so there is no theme toggle.
 
-  This app documents the presentational @vikings/ui catalogue only — there is no
+  This app documents the presentational @vas/ui catalogue only — there is no
   API, so the reference app's MSW worker / react-query wiring is intentionally
   dropped. The a11y addon (`test: 'error'`) is the component-level accessibility
   surface (NFR2).
@@ -20,7 +20,7 @@ const preview: Preview = {
     layout: 'centered',
     options: {
       storySort: {
-        order: ['Viking DS', ['Core', 'Forms', 'Status', 'Feedback', 'Surfaces', 'Patterns']],
+        order: ['VA DS', ['Core', 'Forms', 'Status', 'Feedback', 'Surfaces', 'Patterns']],
       },
     },
     backgrounds: {

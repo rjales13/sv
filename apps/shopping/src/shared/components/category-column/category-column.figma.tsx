@@ -12,7 +12,7 @@ import { CategoryBand } from './category-band';
 
 figma.connect(
   CategoryBand,
-  'https://www.figma.com/design/savWyo2gT0Xz4lqin0fJ7r/ShoppingApp_UX-VD?node-id=2562-61098',
+  'https://www.figma.com/design/savWyo2gT0Xz4lqin0fJ7r/SApp_UX-VD?node-id=2562-61098',
   {
     example: () => (
       <CategoryBand

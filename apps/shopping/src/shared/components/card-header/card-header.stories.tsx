@@ -3,7 +3,7 @@ import { expect, within } from 'storybook/test';
 import { CardHeader } from './card-header';
 
 /*
-  CardHeader — cruise / extension result row header (node 748:48042).
+  CardHeader — cr / extension result row header (node 748:48042).
 
   Each story covers:
     • A11y        — axe runs automatically via @storybook/addon-a11y after play().
@@ -13,10 +13,10 @@ import { CardHeader } from './card-header';
   play() verifies rendered content rather than driving events.
 */
 
-const CRUISE = {
+const cr = {
   title: 'Grand European Tour',
   meta: 'EUR',
-  ship: 'Viking Shipxxx',
+  ship: 'VA Shipxxx',
   voyageCode: 'VIL00000000',
   priceLabel: 'Starting at',
 } as const;
@@ -53,24 +53,24 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** Oceans — the default cruise row: navy chip, ship and voyage code. */
+/** Oceans — the default cr row: navy chip, ship and voyage code. */
 export const Oceans: Story = {
-  args: { ...CRUISE, category: 'oceans' },
+  args: { ...cr, category: 'oceans' },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText('Oceans')).toBeInTheDocument();
     await expect(canvas.getByText('Grand European Tour')).toBeInTheDocument();
     await expect(canvas.getByText('EUR')).toBeInTheDocument();
-    await expect(canvas.getByText('Viking Shipxxx')).toBeInTheDocument();
+    await expect(canvas.getByText('VA Shipxxx')).toBeInTheDocument();
     await expect(canvas.getByText('VIL00000000')).toBeInTheDocument();
     await expect(canvas.getByText('Starting at')).toBeInTheDocument();
     await expect(canvas.getByText('$4,999.00')).toBeInTheDocument();
   },
 };
 
-/** Rivers — Viking red chip. */
+/** Rivers — VA red chip. */
 export const Rivers: Story = {
-  args: { ...CRUISE, category: 'rivers' },
+  args: { ...cr, category: 'rivers' },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText('Rivers')).toBeInTheDocument();
@@ -79,7 +79,7 @@ export const Rivers: Story = {
 
 /** Expeditions — slate chip. */
 export const Expeditions: Story = {
-  args: { ...CRUISE, category: 'expeditions' },
+  args: { ...cr, category: 'expeditions' },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText('Expeditions')).toBeInTheDocument();
@@ -88,16 +88,16 @@ export const Expeditions: Story = {
 
 /** Mississippi — green chip. */
 export const Mississippi: Story = {
-  args: { ...CRUISE, category: 'mississippi' },
+  args: { ...cr, category: 'mississippi' },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText('Mississippi')).toBeInTheDocument();
   },
 };
 
-/** CruiseSoldOut — the price block is replaced by a SOLD OUT badge. */
-export const CruiseSoldOut: Story = {
-  args: { ...CRUISE, category: 'oceans', soldOut: true },
+/** crSoldOut — the price block is replaced by a SOLD OUT badge. */
+export const crSoldOut: Story = {
+  args: { ...cr, category: 'oceans', soldOut: true },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(canvas.getByText(/sold out/i)).toBeInTheDocument();
@@ -106,7 +106,7 @@ export const CruiseSoldOut: Story = {
   },
 };
 
-/** Pre — extension before the cruise; no ship or voyage code. */
+/** Pre — extension before the cr; no ship or voyage code. */
 export const Pre: Story = {
   args: { ...EXTENSION, category: 'pre' },
   play: async ({ canvasElement }) => {
@@ -119,7 +119,7 @@ export const Pre: Story = {
   },
 };
 
-/** PreStopover — extension stopover before the cruise. */
+/** PreStopover — extension stopover before the cr. */
 export const PreStopover: Story = {
   args: { ...EXTENSION, category: 'pre-stopover' },
   play: async ({ canvasElement }) => {
@@ -128,7 +128,7 @@ export const PreStopover: Story = {
   },
 };
 
-/** Post — extension after the cruise. */
+/** Post — extension after the cr. */
 export const Post: Story = {
   args: { ...EXTENSION, category: 'post' },
   play: async ({ canvasElement }) => {
@@ -137,7 +137,7 @@ export const Post: Story = {
   },
 };
 
-/** PostStopover — extension stopover after the cruise. */
+/** PostStopover — extension stopover after the cr. */
 export const PostStopover: Story = {
   args: { ...EXTENSION, category: 'post-stopover' },
   play: async ({ canvasElement }) => {
@@ -172,7 +172,7 @@ export const ExtensionSoldOut: Story = {
 /** LongTitle — a title beyond the row width truncates rather than wrapping. */
 export const LongTitle: Story = {
   args: {
-    ...CRUISE,
+    ...cr,
     category: 'oceans',
     title: 'Grand European Tour with Extended Scandinavian Fjords and Baltic Capitals',
   },

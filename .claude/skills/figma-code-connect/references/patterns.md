@@ -1,4 +1,4 @@
-# Figma Code Connect — Viking Patterns Reference
+# Figma Code Connect — VA Patterns Reference
 
 ## Size mapping convention
 
@@ -157,7 +157,7 @@ import { Label } from './label';
 import { TheControl } from './the-control';
 
 /*
-  Code Connect for Viking TheControl (SA-DesignSystem, node XX:YY).
+  Code Connect for VA TheControl (SA-DesignSystem, node XX:YY).
   Size:  x-lg → "xl"  ·  lg-default → "default"  ·  md → "sm"  ·  sm → "xs"
   State: Disabled → disabled  ·  Error → variant-filtered (adds FieldError)
          Focused/Hover → CSS-driven, no prop.

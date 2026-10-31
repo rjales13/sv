@@ -1,16 +1,16 @@
-import { cn } from '@vikings/ui/lib/utils';
+import { cn } from '@vas/ui/lib/utils';
 import { useId } from 'react';
 import { PriceLine, type PriceLineProps } from '../price-line/index.ts';
 
 /*
   CategoryColumn — one priced stateroom category in the fare grid
-  (ShoppingApp_UX-VD, node 2562:61098; the column frames inside each variant).
+  (SApp_UX-VD, node 2562:61098; the column frames inside each variant).
 
   A centred category name over a stack of PriceLine rows. The Figma variants
   named "3/4/5/6 columns" are not states — they are just different array
   lengths, so column count is data, not a prop.
 
-  Known duplication: packages/ui/cruise-pricing-card.tsx already renders this
+  Known duplication: packages/ui/cr-pricing-card.tsx already renders this
   shape internally (FareCategoryColumn/VoyageBand), but against the older row
   (availability dot + bare code) rather than PriceLine's Tag chip, and with a
   different title ramp. Left standalone deliberately; converging the two would

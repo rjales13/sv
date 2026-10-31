@@ -1,10 +1,10 @@
-import { Alert, AlertAction, AlertDescription, AlertTitle } from '@vikings/ui/components/alert';
-import { Icon, type IconName } from '@vikings/ui/components/icon';
-import { cn } from '@vikings/ui/lib/utils';
+import { Alert, AlertAction, AlertDescription, AlertTitle } from '@vas/ui/components/alert';
+import { Icon, type IconName } from '@vas/ui/components/icon';
+import { cn } from '@vas/ui/lib/utils';
 import type * as React from 'react';
 
 /*
-  VAlert — the Viking status banner as one call.
+  VAlert — the VA status banner as one call.
 
   The DS Alert is a primitive set: every call site hand-assembles Alert + Icon +
   AlertTitle + AlertDescription + AlertAction, and has to remember the icon's
