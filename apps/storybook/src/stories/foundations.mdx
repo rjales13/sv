@@ -1,0 +1,75 @@
+import { Meta } from "@storybook/addon-docs/blocks"
+
+<Meta title="Viking DS/Foundations" />
+
+<div style={{ fontFamily: "var(--font-sans, 'Open Sans')", color: "#000" }}>
+
+# Viking Shopping App — Design System
+
+shadcn/ui primitives restyled to the Viking cruise-booking workspace: a **dense,
+factual, keyboard-fast** internal tool for travel advisors. Not a consumer
+marketing site — no gradients, no rounded photography, no motion.
+
+These components are the standard shadcn/ui files under `src/components/ui/`,
+re-skinned to the DS token layer in `src/index.css`. Import them exactly as you
+would in any shadcn project (`@vikings/ui/components/button`, etc.).
+
+---
+
+## Palette
+
+<div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: 12, margin: "16px 0" }}>
+  {[
+    ["Fjord blue", "#0F3055", "The system: headings, figures, primary buttons, focus, selection", "#fff"],
+    ["Fjord hover", "#142640", "One step darker on hover", "#fff"],
+    ["Viking red", "#B10A32", "Brand accent — the chip, the red CTA. Used sparingly", "#fff"],
+    ["Slate", "#456580", "Tertiary fill", "#fff"],
+    ["Selected", "#DAE8EF", "Pale blue — every selected state", "#0F3055"],
+    ["Page", "#F4F4F4", "The app background", "#000"],
+    ["Surface", "#FFFFFF", "Panels and cards", "#000"],
+    ["Surface subtle", "#FAFAFA", "Table headers, filled fields", "#000"],
+    ["Success", "#005E4C", "Status teal-green", "#fff"],
+    ["Warning", "#E26918", "Status orange", "#fff"],
+    ["Error", "#CE0037", "Status crimson", "#fff"],
+    ["Info", "#1268C9", "Status blue", "#fff"],
+  ].map(([name, hex, note, fg]) => (
+    <div key={hex} style={{ borderRadius: 4, overflow: "hidden", boxShadow: "inset 0 0 0 1px #E6E6E6" }}>
+      <div style={{ background: hex, color: fg, height: 64, padding: 8, display: "flex", flexDirection: "column", justifyContent: "flex-end", fontSize: 12, fontWeight: 600 }}>
+        {name}
+      </div>
+      <div style={{ background: "#fff", padding: 8, fontSize: 11, color: "#595959" }}>
+        <code style={{ fontSize: 11 }}>{hex}</code>
+        <div style={{ marginTop: 4 }}>{note}</div>
+      </div>
+    </div>
+  ))}
+</div>
+
+## Type
+
+Open Sans throughout — Regular 400, SemiBold 600, Bold 700. The working range is
+tight: 11–14px, with 12px doing most of the work. Bold uppercase 11px carries
+every eyebrow and column header.
+
+<div style={{ margin: "16px 0", display: "flex", flexDirection: "column", gap: 8 }}>
+  <div style={{ fontSize: 32, fontWeight: 700, lineHeight: 1.2, color: "#0F3055" }}>Heading 1 · 32/700</div>
+  <div style={{ fontSize: 24, fontWeight: 700, lineHeight: 1.25, color: "#0F3055" }}>Heading 2 · 24/700</div>
+  <div style={{ fontSize: 20, fontWeight: 700, lineHeight: 1.3, color: "#0F3055" }}>Heading 3 · 20/700</div>
+  <div style={{ fontSize: 18, fontWeight: 600, lineHeight: 1.35, color: "#0F3055" }}>Heading 4 · 18/600</div>
+  <div style={{ fontSize: 16, fontWeight: 600, lineHeight: 1.4 }}>Title lg · 16/600</div>
+  <div style={{ fontSize: 14, fontWeight: 400, lineHeight: 1.5 }}>Body md · 14/400 — the default running text for the workspace.</div>
+  <div style={{ fontSize: 13, fontWeight: 400, lineHeight: 1.5 }}>Body sm · 13/400</div>
+  <div style={{ fontSize: 11, fontWeight: 700, lineHeight: 1.2, textTransform: "uppercase", letterSpacing: "0.02em", color: "#595959" }}>Overline · 11/700 uppercase</div>
+</div>
+
+## Geometry & borders
+
+- **Radius:** 4px is the default (buttons, fields, cards). 2px for chips and
+  checkboxes. Pill for badges, toggles and slider tracks. 12px only on the modal.
+- **Borders are inset rings** — every border is an inset `box-shadow`, so a
+  control never shifts size between default / hover / focus / error. 1px neutral
+  default, 2px fjord focus, 1px crimson error.
+- **Focus** is a 2px fjord ring drawn 2px *outside* the control.
+- **Motion is disabled** system-wide. The only animation is the loading spinner.
+
+</div>

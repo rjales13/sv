@@ -1,0 +1,15 @@
+{
+  // `resolveJsonModule` is enabled because the composition root imports `@vikings/adapters`,
+  // whose fixture seam imports the committed catavail JSON as a module (see
+  // packages/adapters/src/mock/fixture-data.ts). Consuming that package as source pulls the
+  // JSON import into this app's type-check program, so the app must allow JSON modules too.
+  "extends": "@vikings/typescript-config/react-library.json",
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["src/**/*.figma.tsx", "src/**/*.stories.tsx"]
+}

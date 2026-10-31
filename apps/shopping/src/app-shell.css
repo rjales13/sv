@@ -1,0 +1,26 @@
+/*
+  App-level shell rules. Deliberately NOT in `@vikings/ui/globals.css`: that stylesheet is the
+  shared DS token layer and Storybook loads it too, where a scrolling document is exactly right.
+  This is a statement about THIS app's shell, so it lives with the app.
+
+  The app is a fixed-viewport surface embedded in the D365 host. Every scrollable region inside
+  it — the results list, the cruise-detail pane, the Build Panel drawer — owns its own scroll
+  box. The document itself must never scroll.
+
+  Without this the document scrolled too, and the two problems that caused were not cosmetic:
+
+    1. Two vertical scrollbars for one list — the document's and the pane's — which is what the
+       agents reported from the VDI.
+    2. Worse: the document ATE THE WHEEL. Measured on the search screen, a wheel gesture over
+       the app chrome scrolled the page 1200px while the results pane scrolled 0. The pane's
+       own scroll was effectively unreachable, and expanding "More Options" made it sharper by
+       shrinking the pane to ~511px inside a ~9000px scrolling page.
+
+  `overflow: hidden` rather than `clip` on purpose: hidden keeps these elements programmatically
+  scrollable, so `scrollIntoView` and focus-restoration inside the panes still work.
+*/
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}

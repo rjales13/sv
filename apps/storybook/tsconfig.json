@@ -1,0 +1,7 @@
+{
+  "extends": "@vikings/typescript-config/react-library.json",
+  "compilerOptions": {
+    "types": []
+  },
+  "include": [".storybook", "src"]
+}

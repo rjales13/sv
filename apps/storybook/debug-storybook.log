@@ -1,0 +1,18 @@
+[12:48:15.221] [INFO] storybook v10.6.0
+[12:48:15.953] [DEBUG] Getting package.json info for /Users/rafael.jales/Documents/work/viking/viking_shopping_app_client/apps/storybook/package.json...
+[12:48:16.418] [DEBUG] Could not determine @babel/preset-env version in use. In case of runtime errors with @babel/preset-env, you may need to set the babelRemoveBugfixes feature flag in your `main.ts` file.
+[12:48:17.268] [ERROR] [38;2;241;97;97mError: Failed to load static files, no such directory: /Users/rafael.jales/Documents/work/viking/viking_shopping_app_client/apps/context
+Make sure this directory exists.[39m
+    at parseStaticDir (file:///Users/rafael.jales/Documents/work/viking/viking_shopping_app_client/node_modules/.pnpm/storybook@10.6.0_@types+react@19.2.18_prettier@2.8.8_react@19.2.8/node_modules/storybook/dist/_node-chunks/chunk-5VUZRITZ.js:320:11)
+    at file:///Users/rafael.jales/Documents/work/viking/viking_shopping_app_client/node_modules/.pnpm/storybook@10.6.0_@types+react@19.2.18_prettier@2.8.8_react@19.2.8/node_modules/storybook/dist/core-server/presets/common-preset.js:2117:48
+    at Array.map (<anonymous>)
+    at Object.favicon (file:///Users/rafael.jales/Documents/work/viking/viking_shopping_app_client/node_modules/.pnpm/storybook@10.6.0_@types+react@19.2.18_prettier@2.8.8_react@19.2.8/node_modules/storybook/dist/core-server/presets/common-preset.js:2112:193)
+    at async useStatics (file:///Users/rafael.jales/Documents/work/viking/viking_shopping_app_client/node_modules/.pnpm/storybook@10.6.0_@types+react@19.2.18_prettier@2.8.8_react@19.2.8/node_modules/storybook/dist/_node-chunks/chunk-5VUZRITZ.js:276:83)
+    at async Promise.all (index 2)
+    at async storybookDevServer (file:///Users/rafael.jales/Documents/work/viking/viking_shopping_app_client/node_modules/.pnpm/storybook@10.6.0_@types+react@19.2.18_prettier@2.8.8_react@19.2.8/node_modules/storybook/dist/core-server/index.js:8481:141)
+    at async buildOrThrow (file:///Users/rafael.jales/Documents/work/viking/viking_shopping_app_client/node_modules/.pnpm/storybook@10.6.0_@types+react@19.2.18_prettier@2.8.8_react@19.2.8/node_modules/storybook/dist/core-server/index.js:7270:12)
+    at async buildDevStandalone (file:///Users/rafael.jales/Documents/work/viking/viking_shopping_app_client/node_modules/.pnpm/storybook@10.6.0_@types+react@19.2.18_prettier@2.8.8_react@19.2.8/node_modules/storybook/dist/core-server/index.js:9320:41)
+    at async withTelemetry (file:///Users/rafael.jales/Documents/work/viking/viking_shopping_app_client/node_modules/.pnpm/storybook@10.6.0_@types+react@19.2.18_prettier@2.8.8_react@19.2.8/node_modules/storybook/dist/_node-chunks/chunk-FTP3QZ7O.js:142:12)
+[12:48:17.270] [WARN] Broken build, fix the error above.
+You may need to refresh the browser.
+[12:48:17.334] [WARN] No story files found for the specified pattern: src/**/*.stories.@(js|jsx|mjs|ts|tsx)
